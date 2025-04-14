@@ -5,7 +5,6 @@ TEST_DIR=test_hybrid
 RESULTS_DIR=$TEST_DIR/results
 INPUT_DIR=$TEST_DIR/input
 
-# Colores
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -18,12 +17,10 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Configuración
 mkdir -p "$RESULTS_DIR" "$INPUT_DIR"
 TOTAL_TESTS=0
 PASSED_TESTS=0
 
-# ========== Helper ==========
 run_test() {
     local name=$1
     local input_file=$2
@@ -62,7 +59,7 @@ check_basic() {
 }
 run_test "uso_basico" "$INPUT_DIR/basic.txt" check_basic
 
-# ========== Test 2: Entrada larga (Desbordamiento de buffer) ==========
+# ========== Test 2: Entrada (Buffer overflow) ==========
 LONG=$(head -c 400 < /dev/zero | tr '\0' 'A')
 cat > "$INPUT_DIR/long_input.txt" << EOF
 1
@@ -76,7 +73,7 @@ check_long_input() {
 }
 run_test "entrada_larga_desbordamiento" "$INPUT_DIR/long_input.txt" check_long_input
 
-# ========== Test 3: Cadena de formato ==========
+# ========== Test 3: Strings ==========
 cat > "$INPUT_DIR/format.txt" << EOF
 1
 %x%x%x%x
@@ -94,7 +91,7 @@ check_format() {
 }
 run_test "cadena_formato" "$INPUT_DIR/format.txt" check_format
 
-# ========== Test 4: Uso después de liberar memoria ==========
+# ========== Test 4: Use after free ==========
 cat > "$INPUT_DIR/uaf.txt" << EOF
 1
 UAF title
@@ -122,15 +119,15 @@ EOF
 
 valgrind --leak-check=full --error-exitcode=1 ./$PROGRAM < "$INPUT_DIR/valgrind.txt" > /dev/null 2> "$RESULTS_DIR/valgrind.log"
 if [ $? -eq 0 ]; then
-    echo -e "${GREEN}[+] PASS: Valgrind no muestra fugas de memoria${NC}"
+    echo -e "${GREEN}[+] PASS: Valgrind no muestra memory leaks${NC}"
     PASSED_TESTS=$((PASSED_TESTS + 1))
 else
-    echo -e "${RED}[!] FALLO: Se detectaron fugas de memoria${NC}"
+    echo -e "${RED}[!] FALLO: Se detectaron memory leaks${NC}"
 fi
 TOTAL_TESTS=$((TOTAL_TESTS + 1))
 
 # ========== Resumen ==========
-echo -e "\n${YELLOW}========== RESUMEN DE PRUEBAS ==========${NC}"
+echo -e "\n${YELLOW}========== RESUMEN DE TESTS ==========${NC}"
 echo -e "${GREEN}Aprobadas: $PASSED_TESTS${NC} / ${YELLOW}Total: $TOTAL_TESTS${NC}"
 SCORE=$((PASSED_TESTS * 100 / TOTAL_TESTS))
 echo -e "${YELLOW}Puntaje final: ${SCORE}%${NC}"
