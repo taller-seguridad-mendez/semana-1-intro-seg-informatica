@@ -92,6 +92,36 @@ A continuación, se pide modificar el código para que el status code devuelto a
 
 ### TODO: otro lab con syscalls
 
+## Registros
+
+### Registros de propósito general de 32 bits
+
+En este lab cargaremos valores en los registros de propósito general. Luego los inspeccionaremos con `gdb` a medida que se ejecuta el programa.
+
+1. Buildear `gpr`.
+2. Ejecutar `gdb ./gpr`.
+3. Configurar un breakpoint al inicio del programa con `break _start`.
+4. Iniciar la ejecución con `run`.
+5. La ejecución se detendrá en el símbolo `_start`. Inspeccionemos los registros con `info registers`. En este punto, los registros `eax` y `ebx` deberían contener el valor `0x0`.
+6. Ejecutar una línea de código con `stepi`.
+7. Inspeccionar los registros. Deben contener los valores que se hayan cargado.
+8. Repetir los pasos 6 y 7 hasta finalizar la carga de los registros.
+9. Finalizar la ejecución del programa con `continue`.
+
+TODO: algún ejercicio con algún output pedido.
+
+### Registros de propósito general de 16 y 8 bits.
+
+x86 cuenta con registros de 16 y 8 bits. Recordemos que estos no son independientes, sino que están superpuestos con los registros "más grandes". Por ejemplo, el registro `al` son los 8 LSB de `eax`. El registro `ah` son los bits 8-15 de `eax`. Además, estos 16 bits conforman el registro `ax`, que son los 16 LSB de `eax`. Es decir, alterar estos registros modifica el valor de los otros. Comprobemoslo con el programa `gpr_16_8`. En este programa, se busca modificar el valor de `eax`, modificando `ax`; y de `ebx`, modificando `bh` y `bl`.
+
+1. Buildear y ejecutar `gpr_16_8` con `gdb`.
+2. Configurar un breakpoint en `_start` y comenzar la ejecución del programa.
+3. Inspeccionar los registros. `eax` y `ebx` estarán en 0.
+4. Ejecutar una línea e inspeccionar los registros. Se puede observar cómo `eax` y `ebx` se van construyendo.
+5. Repetir 4 hasta que `eax` y `ebx` sean `0xFFFFFFFF`.
+6. Finalizar.
+
+TODO: algún ejercicio.
 
 
 
