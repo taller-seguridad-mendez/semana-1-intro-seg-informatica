@@ -92,7 +92,7 @@ A continuación, se pide modificar el código para que el status code devuelto a
 
 ### TODO: otro lab con syscalls
 
-## Registros
+## Registros de propósito general
 
 ### Registros de propósito general de 32 bits
 
@@ -110,7 +110,7 @@ En este lab cargaremos valores en los registros de propósito general. Luego los
 
 TODO: algún ejercicio con algún output pedido.
 
-### Registros de propósito general de 16 y 8 bits.
+### Registros de propósito general de 16 y 8 bits
 
 x86 cuenta con registros de 16 y 8 bits. Recordemos que estos no son independientes, sino que están superpuestos con los registros "más grandes". Por ejemplo, el registro `al` son los 8 LSB de `eax`. El registro `ah` son los bits 8-15 de `eax`. Además, estos 16 bits conforman el registro `ax`, que son los 16 LSB de `eax`. Es decir, alterar estos registros modifica el valor de los otros. Comprobemoslo con el programa `gpr_16_8`. En este programa, se busca modificar el valor de `eax`, modificando `ax`; y de `ebx`, modificando `bh` y `bl`.
 
@@ -123,7 +123,7 @@ x86 cuenta con registros de 16 y 8 bits. Recordemos que estos no son independien
 
 TODO: algún ejercicio.
 
-### Flags
+## Registro `flags` y condition codes
 
 El registro `FLAGS` de x86, (`EFLAGS` para 32 bits), contiene el estado del procesador en un determinado momento. Cada bit del registro representa el estado (verdadero o falso) de alguna condición. Por ejemplo, representando el resultado de alguna operación anterior, como las flags _overflow_, _carry_, _sign_ y _zero_, colectivamente llamados _condition codes_.
 
@@ -141,6 +141,14 @@ En el siguiente lab ejecutaremos algunas operaciones aritméticas y observaremos
 8. Finalizar.
 
 TODO: algún ejercicio que tenga que printear eflags y se testea.
+
+### Privilege level
+
+Los bits 12 y 13 son el registro `IOPL`, o Input Output Privilege Level. Representa los "niveles de privilegio" o "rings" que determinan el nivel de control que tiene el programa sobre el sistema. Si `IOPL` = 0 se habla de "Ring 0" o "Kernel mode", y si `IOPL` = 1 se habla de "Ring 3" o "User mode". En Linux, sólo el Kernel se ejecuta en Kernel mode, mientras que todos los programas de usuario se ejecutan en User mode o _userland_. Sólo el Kernel tiene control absoluto sobre el hardware.
+
+Tratemos de alterar el nivel de privilegio modificando el registro `eflags`. En `privilege_level.asm` se pushea el registro `eflags` al stack y se mueve al registro `eax`. Se alteran los bits 12 y 13 para que sean 0, y se pushea esto al registro `eflags`. Luego, se ejecuta una instrucción privilegiada (`out`) para verificar si se cuenta con este nivel de privilegio.
+
+Builder y ejecutar `privilege_level`. ¿Cuál fue el resultado?
 
 
 TODO: docker con todo?
