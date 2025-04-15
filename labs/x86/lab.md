@@ -123,6 +123,24 @@ x86 cuenta con registros de 16 y 8 bits. Recordemos que estos no son independien
 
 TODO: algún ejercicio.
 
+### Flags
+
+El registro `FLAGS` de x86, (`EFLAGS` para 32 bits), contiene el estado del procesador en un determinado momento. Cada bit del registro representa el estado (verdadero o falso) de alguna condición. Por ejemplo, representando el resultado de alguna operación anterior, como las flags _overflow_, _carry_, _sign_ y _zero_, colectivamente llamados _condition codes_.
+
+### Condition codes
+
+En el siguiente lab ejecutaremos algunas operaciones aritméticas y observaremos cómo se modifican los bits del registro `EFLAGS` correspondientes.
+
+1. Buildear y ejecutar `condition_codes` con `gdb`.
+2. Configurar breakpoints en `_start`, `zf`, `cf`, `of` y `cf`.
+3. Comenzar la ejecución del programa.
+4. Inspeccionar el registro `eflags`.
+5. Continuar la ejecución del programa.
+6. Observar los cambios en el registro `eflags`.
+7. Repetir 5 y 6 hasta agotar los breakpoints configurados.
+8. Finalizar.
+
+TODO: algún ejercicio que tenga que printear eflags y se testea.
 
 
 TODO: docker con todo?
