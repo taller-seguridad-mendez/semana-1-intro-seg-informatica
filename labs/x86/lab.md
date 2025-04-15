@@ -4,7 +4,7 @@ En este lab repasaremos conceptos fundamentales de la arquitectura x86, mediante
 
 Nos enfocaremos en la arquitectura i386, es decir, la variante de 32 bits de x86. Provee un gran punto de entrada, permitiendo explorar los conceptos esenciales sin considerar las sutilezas de x86-64.
 
-## Lab 0: Hola mundo!
+## Hola mundo!
 
 ### Dependencias
 
@@ -43,6 +43,56 @@ Finalmente, ejecutar:
 ```
 
 Se pide modificar el archivo `hello_world.asm` para obtener "¡Hola, mundo!" por consola.
+
+### Makefile
+
+Se provee un Makefile para facilitar la generación de los ejecutables. Buildear y linkear `hello_world` con el Makefile:
+
+```sh
+make hello_world
+```
+
+Luego, ejecutar.
+
+## Software interrupts y syscalls
+
+x86 soporta la familia de instrucciones `INT`. `INT n` genera una llamada a una "interrupt procedure". Cada `n` sirve de índice a la Interrupt Descriptor Table (IDT) del procesador. `INT 0` a `INT 21` son interrupciones y excepciones predefinidas. `INT 22` a `INT 255` sirven para interrupciones por software.
+
+TODO: enlace al manual Intel (capítulo 6.5 - interrupts and exceptions).
+TODO: enlace al manual Intel (anexo 2A, INT n/INTO/INT3/INT1).
+TODO: enlace a la definición de la IDT en el Linux kernel.
+
+Linux define `INT 0x80` como la entrada para las system calls. Se carga el número de syscall en el registro `eax`. La tabla de syscalls para x86 32 bits mapea los códigos de cada syscall a su correspondiente nombre y "entry point". TODO: enlace a la tabla de syscalls. Si las syscall requiriese argumentos, estos se deben cargar en registros predeterminados, que se puede consultar en el código de entrada para syscalls en x86 32 bits (TODO: enlace a entry_32.S). Estos son:
+
+```
+eax     syscall_number
+ebx     arg1
+ecx     arg2
+edx     arg3
+esi     arg4
+edi     arg5
+ebp     arg6
+```
+
+### `sys_exit` y exit code
+
+En este lab llamaremos a la syscall "exit" (ver `man 2 exit`). Esta recibe un "status code" a ser devuelto al proceso padre. En `sys_exit.asm` se carga 1 en `eax`, correspondiente a la syscall "exit". Se carga el "status" o "exit code" en `ebx`. Luego, se llama al interrupt `int 0x80` para ejecutar la syscall:
+
+```
+_start:
+	mov eax, 1
+	mov ebx, 1
+	int 0x80
+```
+
+1. Buildear y ejecutar `sys_exit`.
+2. En la consola, consultar el exit code con `echo $?`.
+
+A continuación, se pide modificar el código para que el status code devuelto al proceso ejecutante sea 0.
+
+### TODO: otro lab con syscalls
+
+
 
 
 TODO: docker con todo?

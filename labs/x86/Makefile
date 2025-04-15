@@ -3,7 +3,7 @@ ASMFLAGS = -f elf32
 LD = ld
 LDFLAGS = -m elf_i386
 
-LABS = hello_world privilege_level
+LABS = hello_world sys_exit privilege_level
 
 .PHONY = all clean
 
