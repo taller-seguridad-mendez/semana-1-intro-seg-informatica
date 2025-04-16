@@ -45,10 +45,6 @@ void view_note() {
     }
 
     Note *n = notes[index];
-    if (!n) {
-        printf("La nota fue eliminada!\n");
-        return;
-    }
 
     printf("Titulo: ");
     printf(n->title);
@@ -65,9 +61,8 @@ void delete_note() {
         return;
     }
 
-    free(notes[index]->title);
-    free(notes[index]->body);
-    free(notes[index]);
+
+    notes[index] = NULL;
     printf("Nota borrada.\n");
 }
 

@@ -1,16 +1,15 @@
 # Repaso de C - Manejo de Notas
 
-## Descripción
+Este lab tiene como objetivo reforzar conceptos de programación segura en C a través de la implementación de un gestor de notas simple. El programa proporcionado contiene vulnerabilidades comunes en código C que deberán ser identificadas y corregidas.
 
-En este laboratorio vas a terminar de implementar y probar un programa en C que simula un gestor de notas. El programa permite agregar, visualizar, eliminar, guardar y cargar notas desde un archivo. El objetivo de este ejercicio es practicar el uso de punteros, la gestión de memoria dinámica y mejorar las prácticas de seguridad en la programación.
+## Objetivos
 
-## Requisitos
-
-1. **Manejo de punteros:** Usar punteros correctamente para gestionar las notas.
-2. **No usar variables globales**
-2. **Gestión de memoria dinámica:** Usar malloc y free de manera correcta, sin memory leaks.
-3. **Manejo de strings:** El codigo contiene funciones que manejan strings de forma insegura, reemplazalas por su versión segura
-4. **Chequeo de errores**
+* Identificar y corregir vulnerabilidades de seguridad en código C.
+* Implementar buenas prácticas de manejo de memoria.
+* Prevenir buffer overflows.
+* Evitar vulnerabilidades con format strings.
+* Implementar correcta validación de entrada.
+* Evitar el uso de variables globales.
 
 ## Funcionalidades
 
@@ -22,28 +21,25 @@ El programa debe implementar las siguientes funcionalidades manejando la memoria
 - **Guardar las notas**: Las notas deben guardarse en un archivo llamado `notes.dat` para que puedan ser recuperadas en futuras ejecuciones.
 - **Cargar las notas**: El programa debe cargar las notas desde `notes.dat` al iniciar.
 
-### Opcionales
+## Sugerencias
 
-- **Implementar una funcion de busqueda de notas**
-- **Cambiar el array estatico por un array dinamico o una linked list**
-
-## Pruebas
-
-Para ayudarte a verificar que tu implementación está funcionando correctamente, proporcionamos un script de pruebas. El script realiza varios tests sobre el programa:
-
-1. **Uso básico**: Verifica que se puedan agregar, ver y borrar notas correctamente.
-2. **Buffer overflow**: Prueba si el programa es vulnerable a buffer overflows.
-3. **Manipulación con strings**: Verifica si el programa es vulnerable a fallos de seguridad relacionados con strings.
-4. **Uso de memoria ya liberada**: Comprueba si el programa permite el acceso a memoria después de haberla liberado.
-5. **Valgrind**: Se ejecuta una prueba con `valgrind` para asegurarse de que no haya fugas de memoria.
+* Reemplaza las funciones inseguras por alternativas seguras (Por ejemplo gets() → fgets()).
+* Implementa una estructura para mantener el estado del programa en lugar de variables globales.
+* Verifica el return de todas las funciones que pueden fallar (malloc, fopen, etc.).
+* Usa free() consistentemente.
+* Valida el input del usuario antes de procesarlas.
 
 ## Pruebas
+
+   **El script requiere tener Valgrind instalado para funcionar correctamente**
+
    ```bash
-   ./test.sh
+   ./test_script.sh
    ```
 
    El script compilará el programa, ejecutará los tests y te mostrará los resultados.
 
-## Como se podría ampliar el ejercicio?
+## Como se puede ampliar el lab?
 
-No definir un array con un maximo sino que permitir que se decida entre lista o array dinamico y se tenga que implementar. Implementar otras funciones (busqueda, editar notas).
+* Implementa una función de búsqueda de notas por palabra clave
+* Reemplaza el array estático por una estructura de datos dinámica

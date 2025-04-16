@@ -57,7 +57,7 @@ EOF
 check_basic() {
     grep -q "Nota añadida" "$1" && grep -q "Nota borrada" "$1"
 }
-run_test "uso_basico" "$INPUT_DIR/basic.txt" check_basic
+run_test "Uso Basico" "$INPUT_DIR/basic.txt" check_basic
 
 # ========== Test 2: Entrada (Buffer overflow) ==========
 LONG=$(head -c 400 < /dev/zero | tr '\0' 'A')
@@ -71,7 +71,7 @@ EOF
 check_long_input() {
     grep -q "Nota añadida" "$1"
 }
-run_test "entrada_larga_desbordamiento" "$INPUT_DIR/long_input.txt" check_long_input
+run_test "Test buffer overflow" "$INPUT_DIR/long_input.txt" check_long_input
 
 # ========== Test 3: Strings ==========
 cat > "$INPUT_DIR/format.txt" << EOF
@@ -89,7 +89,7 @@ check_format() {
     fi
     return 0
 }
-run_test "cadena_formato" "$INPUT_DIR/format.txt" check_format
+run_test "Manipulacion a traves de user input" "$INPUT_DIR/format.txt" check_format
 
 # ========== Test 4: Use after free ==========
 cat > "$INPUT_DIR/uaf.txt" << EOF
@@ -106,25 +106,43 @@ EOF
 check_uaf() {
     grep -q "La nota fue eliminada" "$1"
 }
-run_test "uso_despues_de_libera_memoria" "$INPUT_DIR/uaf.txt" check_uaf
+run_test "Test use after free" "$INPUT_DIR/uaf.txt" check_uaf
 
-# ========== Test 5: Valgrind ==========
-cat > "$INPUT_DIR/valgrind.txt" << EOF
+# ========== Test 5: Valgrind (check delete_note) ==========
+cat > "$INPUT_DIR/valgrind_delete.txt" << EOF
 1
 Memory Leak?
 This is a memory test
-4
+1
+Memory Leak?
+This is a memory test
+1
+Memory Leak?
+This is a memory test
+1
+Memory Leak?
+This is a memory test
+1
+Memory Leak?
+This is a memory test
+1
+Memory Leak?
+This is a memory test
+3
+2
 6
 EOF
 
-valgrind --leak-check=full --error-exitcode=1 ./$PROGRAM < "$INPUT_DIR/valgrind.txt" > /dev/null 2> "$RESULTS_DIR/valgrind.log"
+valgrind --leak-check=full --error-exitcode=1 ./$PROGRAM < "$INPUT_DIR/valgrind_delete.txt" > /dev/null 2> "$RESULTS_DIR/valgrind.log"
 if [ $? -eq 0 ]; then
-    echo -e "${GREEN}[+] PASS: Valgrind no muestra memory leaks${NC}"
+    echo -e "${GREEN}[+] PASS: se libera memoria correctamente${NC}"
     PASSED_TESTS=$((PASSED_TESTS + 1))
 else
-    echo -e "${RED}[!] FALLO: Se detectaron memory leaks${NC}"
+    echo -e "${RED}[!] FALLO: hay memory leaks${NC}"
+    grep "definitely lost" "$RESULTS_DIR/valgrind.log" | grep -v "0 bytes"
 fi
 TOTAL_TESTS=$((TOTAL_TESTS + 1))
+
 
 # ========== Resumen ==========
 echo -e "\n${YELLOW}========== RESUMEN DE TESTS ==========${NC}"
