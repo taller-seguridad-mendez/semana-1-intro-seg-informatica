@@ -158,6 +158,8 @@ Builder y ejecutar `privilege_level`. ¿Cuál fue el resultado?
 TODO: docker con todo?
 TODO: otras plataformas?
 
-
-
 # Bibliografía
+
+- _The Art of 64-bit Assembly Language_ by Randall Hyde (No Starch Press)
+- _Intel 64 and IA-32 Architectures Software Developers Manual_
+- Linux source code
