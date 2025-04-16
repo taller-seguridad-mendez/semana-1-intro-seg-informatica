@@ -92,6 +92,10 @@ A continuación, se pide modificar el código para que el status code devuelto a
 
 ### TODO: otro lab con syscalls
 
+## Operaciones aritméticas
+
+Completar `arithmetic.asm` tal que el resultado final en `eax` sea 10.
+
 ## Registros de propósito general
 
 ### Registros de propósito general de 32 bits

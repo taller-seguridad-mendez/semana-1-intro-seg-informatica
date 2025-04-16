@@ -3,7 +3,7 @@ ASMFLAGS = -f elf32
 LD = ld
 LDFLAGS = -m elf_i386
 
-LABS = hello_world sys_exit gpr gpr_16_8 condition_codes privilege_level
+LABS = hello_world sys_exit gpr gpr_16_8 condition_codes privilege_level arithmetic
 
 .PHONY = all clean
 
